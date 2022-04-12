@@ -21,7 +21,22 @@ right outer join "Album" a2 on
 where e."Title" is null 
 
 
-select * from "Track" t --inner join "Artist" a on t."ArtistId" = a."ArtistId"
+select tt."Name" from (select t."Composer" , t."Name" from "Track" t 
+group by t."Name", t."Composer") tt
+where tt."Composer" = 'AC/DC'
+
+
+--select sum(t."UnitPrice") from "Track" t 
+--where t."Composer" = 'AC/DC'
+
+select * from "InvoiceLine" i left outer join "Track" t on t."TrackId" = i."TrackId" 
+where t."Composer" = 'AC/DC'
+
+select * from "Invoice" i 
+
+select * from (select * from "Track" t 
+full outer join "InvoiceLine" l on t."TrackId" = l."TrackId") e
+where e."Composer" = 'AC/DC'
 
 
 
