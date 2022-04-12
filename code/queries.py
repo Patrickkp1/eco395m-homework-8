@@ -1,3 +1,31 @@
+-- 1. select COUNT(*) from "Artist" a 
+
+select COUNT(*) from (select
+	a."ArtistId" ,
+	a."Name",
+	a2."Title"
+from
+	"Artist" a
+left outer join "Album" a2 on
+	a2."ArtistId" = a."ArtistId") e
+where e."Title" is null 
+
+select COUNT(*) from (select
+	a."ArtistId" ,
+	a."Name",
+	a2."Title"
+from
+	"Artist" a
+right outer join "Album" a2 on
+	a2."ArtistId" = a."ArtistId") e
+where e."Title" is null 
+
+
+select * from "Track" t --inner join "Artist" a on t."ArtistId" = a."ArtistId"
+
+
+
+
 # PROBLEM 1
 # How many artists are there?
 # Return a single column called "count" with a single row containing the count.
