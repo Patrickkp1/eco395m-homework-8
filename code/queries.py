@@ -58,7 +58,7 @@ order by e."Total Sales" desc
 # How many artists are there?
 # Return a single column called "count" with a single row containing the count.
 query_1 = """
-
+select COUNT(*) from "Artist" a 
     """
 
 # PROBLEM 2
