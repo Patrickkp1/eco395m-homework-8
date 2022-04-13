@@ -1,59 +1,3 @@
--- Question 1: 
-select COUNT(*) from "Artist" a 
-
--- Question 2:
-select COUNT(*) from (select
-	a."ArtistId" ,
-	a."Name",
-	a2."Title"
-from
-	"Artist" a
-left outer join "Album" a2 on
-	a2."ArtistId" = a."ArtistId") e
-where e."Title" is null 
-
--- Question 3:
-select COUNT(*) from (select
-	a."ArtistId" ,
-	a."Name",
-	a2."Title"
-from
-	"Artist" a
-right outer join "Album" a2 on
-	a2."ArtistId" = a."ArtistId") e
-where e."Title" is null 
-
--- Question 4:
-select tt."Name" from (select t."Composer" , t."Name" from "Track" t 
-group by t."Name", t."Composer") tt
-where tt."Composer" = 'AC/DC'
-
-
--- Question 5:
-select sum(il."UnitPrice") as "Total Sales"
-from "InvoiceLine" il 
-left outer join "Track" t 
-on il."TrackId" = t."TrackId" 
-where t."TrackId" in (select t2."TrackId" from "Track" t2 where t2."Composer" = 'AC/DC')
-
--- Question 6:
-select e.* from (select "Composer" as "Artist", sum(il."UnitPrice") as "Total Sales"
-from "InvoiceLine" il 
-left outer join "Track" t 
-on il."TrackId" = t."TrackId"
-group by t."Composer") e
-where e."Total Sales" <= 5 and e."Artist" in (select a."Name" from "Artist" a)
-
--- Question 7:
-select e.* from (select "Composer" as "Artist", sum(il."UnitPrice") as "Total Sales"
-from "InvoiceLine" il 
-left outer join "Track" t 
-on il."TrackId" = t."TrackId"
-group by t."Composer") e
-where e."Artist" in (select a."Name" from "Artist" a)
-order by e."Total Sales" desc
-
-
 # PROBLEM 1
 # How many artists are there?
 # Return a single column called "count" with a single row containing the count.
@@ -65,14 +9,30 @@ select COUNT(*) from "Artist" a
 # How many Artists do not have an Album associated with them?
 # Return a single column called "count" with a single row containing the count.
 query_2 = """
-
+select COUNT(*) from (select
+	a."ArtistId" ,
+	a."Name",
+	a2."Title"
+from
+	"Artist" a
+left outer join "Album" a2 on
+	a2."ArtistId" = a."ArtistId") e
+where e."Title" is null 
 """
 
 # PROBLEM 3
 # How many Albums do not have an artist in the Artist table associated with them?
 # Return a single column called "count" with a single row containing the count.
 query_3 = """
-
+select COUNT(*) from (select
+	a."ArtistId" ,
+	a."Name",
+	a2."Title"
+from
+	"Artist" a
+right outer join "Album" a2 on
+	a2."ArtistId" = a."ArtistId") e
+where e."Title" is null 
 """
 
 # PROBLEM 4
@@ -80,6 +40,10 @@ query_3 = """
 # Return a single column called "AC/DC Tracks",
 # in any order.
 query_4 = """
+select tt."Name" from (select t."Composer" , t."Name" from "Track" t 
+group by t."Name", t."Composer") tt
+where tt."Composer" = 'AC/DC' or tt."AC/DC Tracks" = 'Angus Young, Malcom Young, Brain Johnson'
+
 
 """
 
@@ -88,7 +52,12 @@ query_4 = """
 # Return a single column called "Total Sales" with a single row containing the total.
 
 query_5 = """
-
+select sum(il."UnitPrice") as "Total Sales"
+from "InvoiceLine" il 
+left outer join "Track" t 
+on il."TrackId" = t."TrackId" 
+where t."TrackId" in (select t2."TrackId" from "Track" t2 where t2."Composer" = 'AC/DC' or 
+t2."Composer" = 'Angus Young, Malcom Young, Brain Johnson'))
 """
 
 # PROBLEM 6
@@ -99,6 +68,12 @@ query_5 = """
 # in any order.
 
 query_6 = """
+select e.* from (select "Composer" as "Artist", sum(il."UnitPrice") as "Total Sales"
+from "InvoiceLine" il 
+left outer join "Track" t 
+on il."TrackId" = t."TrackId"
+group by t."Composer") e
+where e."Total Sales" <= 5 and e."Artist" in (select a."Name" from "Artist" a)
 
 """
 
@@ -109,7 +84,13 @@ query_6 = """
 # in descending order of "Total Sales".
 
 query_7 = """
-
+select e.* from (select "Composer" as "Artist", sum(il."UnitPrice") as "Total Sales"
+from "InvoiceLine" il 
+left outer join "Track" t 
+on il."TrackId" = t."TrackId"
+group by t."Composer") e
+where e."Artist" in (select a."Name" from "Artist" a)
+order by e."Total Sales" desc
 """
 
 # PROBLEM 8
