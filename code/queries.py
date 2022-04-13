@@ -1,5 +1,7 @@
--- 1. select COUNT(*) from "Artist" a 
+-- Question 1: 
+select COUNT(*) from "Artist" a 
 
+-- Question 2:
 select COUNT(*) from (select
 	a."ArtistId" ,
 	a."Name",
@@ -10,6 +12,7 @@ left outer join "Album" a2 on
 	a2."ArtistId" = a."ArtistId") e
 where e."Title" is null 
 
+-- Question 3:
 select COUNT(*) from (select
 	a."ArtistId" ,
 	a."Name",
@@ -20,25 +23,35 @@ right outer join "Album" a2 on
 	a2."ArtistId" = a."ArtistId") e
 where e."Title" is null 
 
-
+-- Question 4:
 select tt."Name" from (select t."Composer" , t."Name" from "Track" t 
 group by t."Name", t."Composer") tt
 where tt."Composer" = 'AC/DC'
 
 
---select sum(t."UnitPrice") from "Track" t 
---where t."Composer" = 'AC/DC'
+-- Question 5:
+select sum(il."UnitPrice") as "Total Sales"
+from "InvoiceLine" il 
+left outer join "Track" t 
+on il."TrackId" = t."TrackId" 
+where t."TrackId" in (select t2."TrackId" from "Track" t2 where t2."Composer" = 'AC/DC')
 
-select * from "InvoiceLine" i left outer join "Track" t on t."TrackId" = i."TrackId" 
-where t."Composer" = 'AC/DC'
+-- Question 6:
+select e.* from (select "Composer" as "Artist", sum(il."UnitPrice") as "Total Sales"
+from "InvoiceLine" il 
+left outer join "Track" t 
+on il."TrackId" = t."TrackId"
+group by t."Composer") e
+where e."Total Sales" <= 5 and e."Artist" in (select a."Name" from "Artist" a)
 
-select * from "Invoice" i 
-
-select * from (select * from "Track" t 
-full outer join "InvoiceLine" l on t."TrackId" = l."TrackId") e
-where e."Composer" = 'AC/DC'
-
-
+-- Question 7:
+select e.* from (select "Composer" as "Artist", sum(il."UnitPrice") as "Total Sales"
+from "InvoiceLine" il 
+left outer join "Track" t 
+on il."TrackId" = t."TrackId"
+group by t."Composer") e
+where e."Artist" in (select a."Name" from "Artist" a)
+order by e."Total Sales" desc
 
 
 # PROBLEM 1
