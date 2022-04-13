@@ -100,7 +100,10 @@ order by e."Total Sales" desc
 # Hint: this requires a self join, picking clear aliases will help.
 
 query_8 = """
-
+select e2."Title", concat(e2."LastName", ',', e2."FirstName") as "Name"
+from "Employee" e 
+left outer join "Employee" e2 on e."ReportsTo" = e2."EmployeeId"
+where e."FirstName" = 'Michael'
 """
 
 # PROBLEM 9
