@@ -42,7 +42,7 @@ where e."Title" is null
 query_4 = """
 select tt."AC/DC Tracks" from (select t."Composer" , t."Name" "AC/DC Tracks" from "Track" t 
 group by t."Name", t."Composer") tt
-where tt."Composer" = 'AC/DC' or tt."Composer" = 'Angus Young, Malcom Young, Brain Johnson'
+where tt."Composer" = 'AC/DC' or tt."Composer" = 'Angus Young, Malcolm Young, Brian Johnson'
 
 """
 
@@ -56,7 +56,7 @@ from "InvoiceLine" il
 left outer join "Track" t 
 on il."TrackId" = t."TrackId" 
 where t."TrackId" in (select t2."TrackId" from "Track" t2 where t2."Composer" = 'AC/DC' or 
-t2."Composer" = 'Angus Young, Malcom Young, Brain Johnson')
+t2."Composer" = 'Angus Young, Malcolm Young, Brian Johnson')
 """
 
 # PROBLEM 6
