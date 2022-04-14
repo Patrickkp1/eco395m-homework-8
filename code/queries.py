@@ -67,12 +67,12 @@ t2."Composer" = 'Angus Young, Malcolm Young, Brian Johnson')
 # in any order.
 
 query_6 = """
-select e.* from (select "Composer" as "Artist", sum(il."UnitPrice") as "Total Sales"
-from "InvoiceLine" il 
-left outer join "Track" t 
-on il."TrackId" = t."TrackId"
-group by t."Composer") e
-where e."Total Sales" <= 5 and e."Artist" in (select a."Name" from "Artist" a)
+select aa."Name" as "Artist", sum(il."UnitPrice") as "Total Sales" from  "InvoiceLine" il 
+inner join "Track" t on il."TrackId" = t."TrackId" 
+inner join "Album" a on t."AlbumId" = a."AlbumId"
+inner join "Artist" aa on aa."ArtistId" = a."ArtistId" group by aa."Name" 
+having sum(il."UnitPrice") <= 5
+
 
 """
 
@@ -83,13 +83,12 @@ where e."Total Sales" <= 5 and e."Artist" in (select a."Name" from "Artist" a)
 # in descending order of "Total Sales".
 
 query_7 = """
-select e.* from (select "Composer" as "Artist", sum(il."UnitPrice") as "Total Sales"
-from "InvoiceLine" il 
-left outer join "Track" t 
-on il."TrackId" = t."TrackId"
-group by t."Composer") e
-where e."Artist" in (select a."Name" from "Artist" a)
+select * from (select aa."Name" as "Artist", sum(il."UnitPrice") as "Total Sales" from  "InvoiceLine" il 
+inner join "Track" t on il."TrackId" = t."TrackId" 
+inner join "Album" a on t."AlbumId" = a."AlbumId"
+inner join "Artist" aa on aa."ArtistId" = a."ArtistId" group by aa."Name") e
 order by e."Total Sales" desc
+
 """
 
 # PROBLEM 8
@@ -114,6 +113,9 @@ where e."FirstName" = 'Michael'
 # Hint: this requires a self join, picking clear aliases will help.
 
 query_9 = """
+select concat(e."LastName", ',', e."FirstName") as "Employee Name",  e."Title" as  "Employee Title", 
+concat(e2."LastName", ',', e2."LastName") as "Manager Name", e."Title" as "Manager Title" 
+from "Employee" e inner join "Employee" e2 on e."ReportsTo" = e2."EmployeeId"
 
 """
 
@@ -125,7 +127,9 @@ query_9 = """
 # for example someone with the last name "Smith "and first name "Bob" should be "Bob, Smith"
 
 query_10 = """
-
+select concat(e."LastName", ', ', e."FirstName") as "Name", e."HireDate" as "Hire Date"
+from "Employee" as e
+order by e."HireDate" desc 
 """
 
 # PROBLEM 11
@@ -134,7 +138,9 @@ query_10 = """
 # in any order.
 
 query_11 = """
-
+select e."FirstName" as "First Name", e."LastName" as "Last Name", 
+('2010-01-01' - e."HireDate") as "Hire Date"
+from "Employee" e
 """
 # PROBLEM 12
 # Assume today is 2010-01-01, find every employee with a tenure of less than 7 365-day years.
@@ -142,5 +148,10 @@ query_11 = """
 # in ascending order of tenure.
 
 query_12 = """
-
+select e."FirstName" as "First Name", 
+e."LastName" as "Last Name", 
+('2010-01-01' - e."HireDate") as "Tenure"
+from "Employee" e
+where '2010-01-01' - date(e."HireDate") <= 7*365
+order by "Tenure"
 """
