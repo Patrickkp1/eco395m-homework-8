@@ -137,7 +137,7 @@ order by e."HireDate" desc
 
 query_11 = """
 select e."FirstName" as "First Name", e."LastName" as "Last Name", 
-('2010-01-01' - e."HireDate") as "Hire Date"
+('2010-01-01' - e."HireDate") as "Tenure"
 from "Employee" e
 """
 # PROBLEM 12
