@@ -114,7 +114,7 @@ select "Employee"."EmployeeId" from "Employee" where "EmployeeId" = 6
 # Hint: this requires a self join, picking clear aliases will help.
 
 query_9 = """
-select concat(e."LastName", ',', e."FirstName") as "Employee Name",  e."Title" as  "Employee Title", 
+select concat(e."LastName", ', ', e."FirstName") as "Employee Name",  e."Title" as  "Employee Title", 
 concat(e2."LastName", ',', e2."LastName") as "Manager Name", e."Title" as "Manager Title" 
 from "Employee" e inner join "Employee" e2 on e."ReportsTo" = e2."EmployeeId"
 
