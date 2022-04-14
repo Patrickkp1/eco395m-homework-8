@@ -99,11 +99,9 @@ order by e."Total Sales" desc
 # Hint: this requires a self join, picking clear aliases will help.
 
 query_8 = """
-select e."Title", concat(e."LastName", ',', e."FirstName") as "Name"
-from "Employee" e 
-where e."ReportsTo" = (
-select "Employee"."EmployeeId" from "Employee" where "EmployeeId" = 6
-)
+select e."Name", e."Title" from (select concat(e."LastName", ',', e."FirstName") "Name", e."Title", e2."LastName" as "manager" from "Employee" e 
+join "Employee" e2  on e."ReportsTo" = e2."EmployeeId") e
+where e."manager" = 'Mitchell'
 """
 
 # PROBLEM 9
