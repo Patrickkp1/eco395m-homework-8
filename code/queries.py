@@ -115,7 +115,6 @@ query_9 = """
 select concat(e."LastName", ', ', e."FirstName") as "Employee Name",  e."Title" as  "Employee Title", 
 concat(e2."LastName", ',', e2."LastName") as "Manager Name", e."Title" as "Manager Title" 
 from "Employee" e inner join "Employee" e2 on e."ReportsTo" = e2."EmployeeId"
-
 """
 
 # PROBLEM 10
