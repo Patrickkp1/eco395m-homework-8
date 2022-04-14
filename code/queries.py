@@ -113,7 +113,7 @@ where e."manager" = 'Mitchell'
 
 query_9 = """
 select concat(e."LastName", ', ', e."FirstName") as "Employee Name",  e."Title" as  "Employee Title", 
-concat(e2."LastName", ',', e2."LastName") as "Manager Name", e."Title" as "Manager Title" 
+concat(e2."LastName", ', ', e2."FirstName") as "Manager Name", e2."Title" as "Manager Title" 
 from "Employee" e inner join "Employee" e2 on e."ReportsTo" = e2."EmployeeId"
 """
 
